@@ -9,34 +9,24 @@ public class Player : MonoBehaviour
     public float speed = 5f;
 
     private float input;
-    private bool isPlayerLeft;
+    private string axis;
 
     private void Awake()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
         if(CompareTag("PlayerLeft"))
         {
-            isPlayerLeft = true;
+            axis = "Vertical_P1";
+        }
+        else
+        {
+            axis = "Vertical_P2";
         }
     }
 
     private void Update()
     {
-        if (isPlayerLeft)
-        {
-            float input_01;
-            if (Input.GetKey(KeyCode.W))
-                input_01 = 1;
-            else if (Input.GetKey(KeyCode.S))
-                input_01 = -1;
-        } else
-        {
-            float input_02;
-            if (Input.GetKey(KeyCode.UpArrow))
-                input_02 = 1;
-            else if (Input.GetKey(KeyCode.DownArrow))
-                input_02 = -1;
-        }
+            input = Input.GetAxis(axis);
     }
 
     private void FixedUpdate()

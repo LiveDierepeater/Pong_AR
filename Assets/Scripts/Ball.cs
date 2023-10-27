@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Ball : MonoBehaviour
 {
     private Rigidbody2D rigidbody2D;
+
+    public TextMeshProUGUI Count_L;
+    public TextMeshProUGUI Count_R;
 
     public Vector2 initialVelocity;
     private float multipliedBounceSpeed;
@@ -12,6 +16,9 @@ public class Ball : MonoBehaviour
     private Vector3 initialPosition;
     private float minimumBallSpeed = 7.5f;
     private float countBallCollisions;
+
+    private float points_L = 0;
+    private float points_R = 0;
 
     private void Awake()
     {
@@ -27,6 +34,7 @@ public class Ball : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         EndRound();
+        GivePoints(collision);
         NextRound();
     }
 
@@ -39,12 +47,10 @@ public class Ball : MonoBehaviour
         if (rigidbody2D.velocity.x <= minimumBallSpeed && rigidbody2D.velocity.x >= 0)
         {
             rigidbody2D.velocity = new Vector2(minimumBallSpeed * multipliedBounceSpeed, rigidbody2D.velocity.y);
-            print("velocity.x: " + rigidbody2D.velocity.x);
         }
         else if(rigidbody2D.velocity.x >= -minimumBallSpeed && rigidbody2D.velocity.x <= 0)
         {
             rigidbody2D.velocity = new Vector2(-minimumBallSpeed * multipliedBounceSpeed, rigidbody2D.velocity.y);
-            print("velocity.x: " + rigidbody2D.velocity.x);
         }
     }
 
@@ -59,6 +65,20 @@ public class Ball : MonoBehaviour
     private void EndRound()
     {
         countBallCollisions = 0;
+    }
+
+    private void GivePoints(Collider2D collision2D)
+    {
+        if(collision2D.CompareTag("PlayerLeft"))
+        {
+            points_R++;
+            Count_R.text = "" + points_R;
+        }
+        if(collision2D.CompareTag("PlayerRight"))
+        {
+            points_L++;
+            Count_L.text = "" + points_L;
+        }
     }
 
     private void NextRound()
