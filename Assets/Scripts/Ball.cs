@@ -43,6 +43,9 @@ public class Ball : MonoBehaviour
         //add speed to ball after each collision
         AddBounceSpeed();
 
+        //add random y velocity, when y = 0
+        AddRandomVelocity();
+
         //set x velocity to minimum ball speed on x
         if (rigidbody2D.velocity.x <= minimumBallSpeed && rigidbody2D.velocity.x >= 0)
         {
@@ -56,10 +59,22 @@ public class Ball : MonoBehaviour
 
     private void AddBounceSpeed()
     {
-        //add speed to ball after each collision
         countBallCollisions++;
-        multipliedBounceSpeed = (countBallCollisions/120) + 1f;
-        rigidbody2D.velocity *= multipliedBounceSpeed;
+
+        if (rigidbody2D.velocity.x <= 10f)
+        {
+            //add speed to ball after each collision
+            multipliedBounceSpeed = (countBallCollisions / 120) + 1f;
+            rigidbody2D.velocity *= multipliedBounceSpeed;
+        }
+    }
+
+    private void AddRandomVelocity()
+    {
+        if (rigidbody2D.velocity.y <= 0.5)
+        {
+            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, Random.Range(-1.75f, 1.75f));
+        }
     }
 
     private void EndRound()
